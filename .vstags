@@ -9,3 +9,5 @@ part_2	day-1.pl	41;"	s
 check	day-2.pl	13;"	s
 is_invalid_1	day-2.pl	34;"	s
 is_invalid_2	day-2.pl	43;"	s
+part_1	day-3.pl	13;"	s
+find_largest_num	day-3.pl	25;"	s
