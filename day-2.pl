@@ -21,8 +21,7 @@ sub part_1() {
 
         for (my $i = $start; $i <= $end; $i++) {
             if (length($i) % 2 == 0 && 
-                substr($i, 0, length($i)/2) eq substr($i, length($i)/2) &&
-                !exists $invalid_ids{$i}) {
+                substr($i, 0, length($i)/2) eq substr($i, length($i)/2)) {
                 $invalid_ids{$i} = 1;
             }
         }
