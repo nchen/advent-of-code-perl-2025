@@ -31,7 +31,7 @@ sub check {
     print sum(keys %invalid_ids), "\n";
 }
 
-sub is_invalid_1() {
+sub is_invalid_1 {
     my ($id) = @_;
     if (length($id) % 2 == 0 && 
         substr($id, 0, length($id)/2) eq substr($id, length($id)/2)) {
@@ -40,7 +40,7 @@ sub is_invalid_1() {
     return 0;
 }
 
-sub part_2() {
+sub part_2 {
 
 }
 
