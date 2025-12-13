@@ -16,7 +16,6 @@ sub part_1 {
     for my $line (@lines) {
         chomp($line);
         my $result = find_largest_num($line);
-        # print "Largest number in line: $result\n";
         $total += int($result);
     }
     print "Total sum of largest numbers: $total\n";
@@ -24,13 +23,13 @@ sub part_1 {
 
 sub find_largest_num {
     my (@line) = @_;
-    my @digeits = split('', $line[0]);
+    my @digits = split('', $line[0]);
 
     my $first_num = -1;
     my $first_pos = -1;
 
-    for (my $i = 0; $i < scalar(@digeits) - 1; $i++) {
-        my $digit = int($digeits[$i]);
+    for (my $i = 0; $i < scalar(@digits) - 1; $i++) {
+        my $digit = int($digits[$i]);
         if ($digit > $first_num) {
             $first_num = $digit;
             $first_pos = $i;
@@ -39,8 +38,8 @@ sub find_largest_num {
 
     my $second_num = -1;
 
-    for (my $i = $first_pos + 1; $i < scalar(@digeits); $i++) {
-        my $digit = int($digeits[$i]);
+    for (my $i = $first_pos + 1; $i < scalar(@digits); $i++) {
+        my $digit = int($digits[$i]);
         if ($digit > $second_num) {
             $second_num = $digit;
         }
@@ -49,4 +48,46 @@ sub find_largest_num {
     return $first_num . $second_num;
 }
 
+sub part_2 {
+    my $total = 0;
+
+    for my $line (@lines) {
+        chomp($line);
+        my $result = find_largest_num_2($line);
+        $total += int($result);
+    }
+    print "Total sum of largest numbers: $total\n";
+}
+
+sub find_largest_num_2 {
+    my (@line) = @_;
+    my @digits = split('', $line[0]);
+
+    my @result = ();
+
+    my $num_selected = 0;
+    my $pos_prev_digit = -1;
+    my $num_to_select = 12;
+
+    # Need to select 12 digits from the list
+    for (my $i = 0; $i < $num_to_select; $i++) {
+        my $current = -1;
+        my $current_pos = -1;
+
+        for (my $j = $pos_prev_digit + 1; $j < scalar(@digits) - $num_to_select + 1 + $num_selected; $j++) {
+            if (int($digits[$j]) > $current) {
+                $current = int($digits[$j]);
+                $current_pos = $j;
+            }
+        }
+
+        push(@result, $current);
+        $pos_prev_digit = $current_pos;
+        $num_selected++;
+    }
+
+    return join('', @result);
+}
+
 part_1;
+part_2;
