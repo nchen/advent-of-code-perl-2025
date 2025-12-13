@@ -40,8 +40,39 @@ sub is_invalid_1 {
     return 0;
 }
 
-sub part_2 {
+sub is_invalid_2 {
+    my ($id) = @_;
+    my $l = length($id);
 
+    for (my $split = 1; $split <= $l / 2; $split++) {
+        if ($l % $split != 0) {
+            next;
+        }
+
+        my $is_same = 1;
+        my $pos = 0;
+
+        while ($pos < $l - $split) {
+            if (substr($id, $pos, $split) ne substr($id, $pos + $split, $split)) {
+                $is_same = 0;
+                last;
+            }
+            $pos += $split;
+        }
+
+        if ($is_same) {
+            return 1;
+        }
+    }
+    return 0;
 }
 
+# print is_invalid_2("2121212121"), "\n";
+# print is_invalid_2("824824824"), "\n";
+# print is_invalid_2("123123123123"), "\n";
+# print is_invalid_2("12341234"), "\n";
+# print is_invalid_2("1212121212"), "\n";
+# print is_invalid_2("1212121312"), "\n";
+
 check(\&is_invalid_1);
+check(\&is_invalid_2);
