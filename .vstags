@@ -6,4 +6,6 @@
 !_TAG_PROGRAM_VERSION	5.8	//
 part_1	day-1.pl	11;"	s
 part_2	day-1.pl	41;"	s
-part_1	day-2.pl	13;"	s
+check	day-2.pl	13;"	s
+is_invalid_1	day-2.pl	34;"	s
+part_2	day-2.pl	43;"	s

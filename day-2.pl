@@ -10,7 +10,9 @@ close($file);
 
 print "Read ", scalar(@lines), " lines from the file.\n";
 
-sub part_1() {
+sub check {
+    my ($is_invalid) = @_;
+
     my @ranges = split(',', $lines[0]);
     print scalar(@ranges), " ranges.\n";
 
@@ -20,8 +22,7 @@ sub part_1() {
         my ($start, $end) = $range =~ /(\d+)-(\d+)/;
 
         for (my $i = $start; $i <= $end; $i++) {
-            if (length($i) % 2 == 0 && 
-                substr($i, 0, length($i)/2) eq substr($i, length($i)/2)) {
+            if ($is_invalid->($i)) {
                 $invalid_ids{$i} = 1;
             }
         }
@@ -30,4 +31,17 @@ sub part_1() {
     print sum(keys %invalid_ids), "\n";
 }
 
-part_1();
+sub is_invalid_1() {
+    my ($id) = @_;
+    if (length($id) % 2 == 0 && 
+        substr($id, 0, length($id)/2) eq substr($id, length($id)/2)) {
+        return 1;
+    }
+    return 0;
+}
+
+sub part_2() {
+
+}
+
+check(\&is_invalid_1);
