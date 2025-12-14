@@ -10,14 +10,14 @@ close($file);
 
 print "Read ", scalar(@lines), " lines from the file.\n";
 
-sub check_1 {
-    my @directions = (
-        [-1, -1], [-1, 0], [-1, 1],
-        [ 0, -1],          [ 0, 1],
-        [ 1, -1], [ 1, 0], [ 1, 1],
-    ); # eight neighbors
-    my @states = ();
+my @directions = (
+    [-1, -1], [-1, 0], [-1, 1],
+    [ 0, -1],          [ 0, 1],
+    [ 1, -1], [ 1, 0], [ 1, 1],
+); # eight neighbors
+my @states = ();
 
+sub check_1 {
     for my $line (@lines) {
         chomp($line);
         my @cells = split('', $line);
@@ -31,24 +31,30 @@ sub check_1 {
             my $current = $states[$i][$j];
             next if $current eq '.';
 
-            my $count = 0;
-            for my $dir (@directions) {
-                my $next_i = $i + $dir->[0];
-                my $next_j = $j + $dir->[1];
-                next if $next_i < 0 || $next_j < 0 || 
-                    $next_i >= scalar(@states) || $next_j >= scalar(@{$states[$next_i]});
-                if ($states[$next_i][$next_j] eq '@') {
-                    $count++;
-                }
-            }
-
-            if ($count < 4) {
+            if (is_accessible($i, $j)) {
                 $accessible_locations++;
             }
         }
     }
 
     print "Accessible locations: ", $accessible_locations;
+}
+
+sub is_accessible {
+    my ($i, $j) = @_;
+    my $count = 0;
+
+    for my $dir (@directions) {
+        my $next_i = $i + $dir->[0];
+        my $next_j = $j + $dir->[1];
+        next if $next_i < 0 || $next_j < 0 || 
+            $next_i >= scalar(@states) || $next_j >= scalar(@{$states[$next_i]});
+        if ($states[$next_i][$next_j] eq '@') {
+            $count++;
+        }
+    }
+
+    return $count < 4;
 }
 
 check_1;

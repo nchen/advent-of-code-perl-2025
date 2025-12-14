@@ -13,4 +13,5 @@ part_1	day-3.pl	13;"	s
 find_largest_num	day-3.pl	24;"	s
 part_2	day-3.pl	51;"	s
 find_largest_num_2	day-3.pl	62;"	s
-check_1	day-4.pl	13;"	s
+check_1	day-4.pl	20;"	s
+is_accessible	day-4.pl	43;"	s
