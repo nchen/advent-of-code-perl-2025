@@ -15,9 +15,9 @@ my @directions = (
     [ 0, -1],          [ 0, 1],
     [ 1, -1], [ 1, 0], [ 1, 1],
 ); # eight neighbors
-my @states = ();
 
-sub check_1 {
+sub part_1 {
+    my @states = ();
     for my $line (@lines) {
         chomp($line);
         my @cells = split('', $line);
@@ -31,25 +31,28 @@ sub check_1 {
             my $current = $states[$i][$j];
             next if $current eq '.';
 
-            if (is_accessible($i, $j)) {
+            if (is_accessible(\@states, $i, $j)) {
                 $accessible_locations++;
             }
         }
     }
 
-    print "Accessible locations: ", $accessible_locations;
+    print "Accessible locations: ", $accessible_locations, "\n";
 }
 
 sub is_accessible {
-    my ($i, $j) = @_;
+    my ($states_ref, $i, $j) = @_;
     my $count = 0;
+    my $rows = scalar(@$states_ref);
 
     for my $dir (@directions) {
         my $next_i = $i + $dir->[0];
         my $next_j = $j + $dir->[1];
-        next if $next_i < 0 || $next_j < 0 || 
-            $next_i >= scalar(@states) || $next_j >= scalar(@{$states[$next_i]});
-        if ($states[$next_i][$next_j] eq '@') {
+        next if $next_i < 0 || $next_j < 0;
+        next if $next_i >= $rows;
+        next if $next_j >= scalar(@{$states_ref->[$next_i]});
+        
+        if ($states_ref->[$next_i][$next_j] eq '@') {
             $count++;
         }
     }
@@ -57,4 +60,36 @@ sub is_accessible {
     return $count < 4;
 }
 
-check_1;
+sub part_2 {
+    my @states = ();
+    for my $line (@lines) {
+        chomp($line);
+        my @cells = split('', $line);
+        push @states, \@cells;
+    }
+
+    my $removed = 0;
+    my $removed_this_round = 1;
+
+    while ($removed_this_round > 0) {
+        $removed_this_round = 0;
+
+        for (my $i = 0; $i < scalar(@states); $i++) {
+            for (my $j = 0; $j < scalar(@{$states[$i]}); $j++) {
+                next if $states[$i][$j] eq '.';
+
+                if (is_accessible(\@states, $i, $j)) {
+                    # Remove it
+                    $states[$i][$j] = '.';
+                    $removed_this_round++;
+                }
+            }
+        }
+        $removed += $removed_this_round;
+    }
+
+    print "Removed: ", $removed, "\n";
+}
+
+part_1;
+part_2;
