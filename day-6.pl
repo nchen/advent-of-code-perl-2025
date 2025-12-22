@@ -15,16 +15,16 @@ sub part_1 {
     my @operators = split ' ', $lines[-1];
     my @nums = map { [ split ' ', $_ ] } @lines[0..$#lines-1];
 
-    # zip the operators and numbers by columns
-    my @formulas = ();
-    for my $col (0 .. $#operators) {
-        my @formula = ();
-        for my $row (0 .. $#nums) {
-            push @formula, $nums[$row][$col];
-            push @formula, $operators[$col] if $row < $#nums;
+    # zip the operators and numbers by columns (pure-Perl interleave)
+    my @formulas = map {
+        my $col = $_;
+        my @col_vals = map { $_->[$col] } @nums;
+        my @tokens = ($col_vals[0]);
+        for my $i (1 .. $#col_vals) {
+            push @tokens, $operators[$col], $col_vals[$i];
         }
-        push @formulas, \@formula;
-    }
+        \@tokens;
+    } 0 .. $#operators;
 
     my $total = 0;
 
@@ -33,7 +33,14 @@ sub part_1 {
         $total += $result;
     }
 
-    print "Total sum of evaluated formulas: $total\n";
+    sub assert {
+        my ($cond, $msg) = @_;
+        die $msg unless $cond;
+    }
+
+    my $expected = 4771265398012;
+    assert($total == $expected, "Assertion failed: expected $expected, got $total");
+    print "Assertion passed: total == $expected\n";
 }
 
 sub evaluate {
@@ -56,4 +63,4 @@ sub evaluate {
     return $result;
 }
 
-part_1;
+part_1();
